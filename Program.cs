@@ -12,7 +12,9 @@
                     "\n2. Get All Data From DataBase" +
                     "\n3. Edit Data From DataBase" +
                     "\n4. Delete the Data From DataBase" +
-                    "\n5.Exit the program");
+                    "\n5.Exit the program"+
+                    
+                    "\n6.Create contact using store-procedure ");
 
 
                 Console.Write("\nEnter option: ");
@@ -67,7 +69,27 @@
                             Environment.Exit(0);
                             break;
                         }
+                    case 6:
+                        {
+                            Console.WriteLine("Enter Firstname: - ");
+                            string FirstName = Console.ReadLine();
+                            Console.WriteLine("Enter LastName");
+                            string LastName = Console.ReadLine();
+                            Console.WriteLine("Enter PhoneNumber");
+                            string PhoneNumber = Console.ReadLine();
+                            Console.WriteLine("Enter Email:- ");
+                            string Email = Console.ReadLine();
+                            Console.WriteLine("Enter City:- ");
+                            string City = Console.ReadLine();
+                            Console.WriteLine("Enter Pincode:- ");
+                            string Zip = Console.ReadLine();
+                            Console.WriteLine("Enter State:- ");
+                            string State = Console.ReadLine();
 
+                            Contact contact = new Contact(FirstName, LastName, PhoneNumber, Email, City, State, Zip);
+                            BookOperation.AddContact(contact);
+                            break;
+                        }
                     default:
                         break;
                 }

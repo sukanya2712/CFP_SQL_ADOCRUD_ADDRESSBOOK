@@ -11,6 +11,14 @@ namespace AddressbookADONET
     {
         private string connectionString = "Data Source=DESKTOP-41GBJMF; Database=AddressBookk; Integrated Security=true";
 
+        //string connectionString = @"data source = PRAJWAL; database = OrderManagementSystem ; integrated security = true";
+        /*SqlConnection connection;
+        public StoreProcedureOperations()
+        {
+            connection = new SqlConnection(connectionString);
+        }
+        */
+
         public void AddContact(Contact contact)
         {
             string connection = $"Data source= DESKTOP-41GBJMF; Database = AddressBookk; Integrated Security = true ";
@@ -140,6 +148,56 @@ namespace AddressbookADONET
                 {
                     Console.WriteLine("Failed to delete contact.");
                 }
+            }
+        }
+
+
+        public bool AddDataUsingNONTransactionStoreProcedure(string firstname, string lastname, string Email, string phoneNumber, string city, string state, string zip)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string Query = "AddOrderNewCustomer";
+
+                    using (SqlTransaction sqlTransaction = connection.BeginTransaction())
+                    {
+                        using (SqlCommand sqlCommand = new SqlCommand(Query, connection, sqlTransaction))
+                        {
+                            try
+                            {
+                                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                                sqlCommand.Parameters.AddWithValue("@FirstName", firstname);
+                                sqlCommand.Parameters.AddWithValue("@LastName", lastname);
+                                sqlCommand.Parameters.AddWithValue("@Email", Email);
+                                sqlCommand.Parameters.AddWithValue("@PhoneNumber", phoneNumber);
+                                sqlCommand.Parameters.AddWithValue("@City", city);
+                                sqlCommand.Parameters.AddWithValue("@SState", state);
+                                sqlCommand.Parameters.AddWithValue("@Zip", zip);
+
+                                int result = sqlCommand.ExecuteNonQuery();
+                                sqlTransaction.Commit();
+                                Console.WriteLine($"{result} rows affected");
+                                Console.WriteLine("Data added .....");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Rolling Back the Changes");
+                                sqlTransaction.Rollback();
+                                Console.WriteLine(ex);
+                            }
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Console.WriteLine("Something Went wrong....");
+                return false;
             }
         }
 
