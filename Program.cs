@@ -14,7 +14,8 @@
                     "\n4. Delete the Data From DataBase" +
                     "\n5.Exit the program"+
                     
-                    "\n6.Create contact using store-procedure ");
+                    "\n6.Create contact using Transactional store-procedure " +
+                    "\n7.Display contacts using Transactional store-procedure");
 
 
                 Console.Write("\nEnter option: ");
@@ -86,8 +87,14 @@
                             Console.WriteLine("Enter State:- ");
                             string State = Console.ReadLine();
 
-                            Contact contact = new Contact(FirstName, LastName, PhoneNumber, Email, City, State, Zip);
-                            BookOperation.AddContact(contact);
+                            
+                            BookOperation.AddDataUsingNONTransactionStoreProcedure(FirstName, LastName, PhoneNumber, Email, City, State, Zip);
+                            break;
+                        }
+                    case 7:
+                        {
+                            List<Contact> contacts = BookOperation.DisplayContactsTransactionalStorePro();
+                            Console.WriteLine("Contact List:");
                             break;
                         }
                     default:

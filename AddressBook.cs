@@ -159,7 +159,7 @@ namespace AddressbookADONET
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string Query = "AddOrderNewCustomer";
+                    string Query = "AddOrderNewCustomerr";
 
                     using (SqlTransaction sqlTransaction = connection.BeginTransaction())
                     {
@@ -170,8 +170,8 @@ namespace AddressbookADONET
                                 sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                                 sqlCommand.Parameters.AddWithValue("@FirstName", firstname);
                                 sqlCommand.Parameters.AddWithValue("@LastName", lastname);
-                                sqlCommand.Parameters.AddWithValue("@Email", Email);
                                 sqlCommand.Parameters.AddWithValue("@PhoneNumber", phoneNumber);
+                                sqlCommand.Parameters.AddWithValue("@Email", Email);
                                 sqlCommand.Parameters.AddWithValue("@City", city);
                                 sqlCommand.Parameters.AddWithValue("@SState", state);
                                 sqlCommand.Parameters.AddWithValue("@Zip", zip);
@@ -200,6 +200,71 @@ namespace AddressbookADONET
                 return false;
             }
         }
+
+        public List<Contact> DisplayContactsTransactionalStorePro()
+        {
+            List<Contact> contactslist = new List<Contact>();
+
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+
+                using (SqlTransaction sqlTransaction = sqlConnection.BeginTransaction())
+                {
+                    try
+                    {
+                        using (SqlCommand cmd = new SqlCommand("DisplayContact", sqlConnection, sqlTransaction))
+                        {
+                            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    Contact contact = new Contact()
+                                    {
+                                        ID = (int)reader["ID"],
+                                        FirstName = (string)reader["FirstName"],
+                                        LastName = (string)reader["LastName"],
+                                        Email = (string)reader["Email"],
+                                        PhoneNumber = (string)reader["PhoneNumber"],
+                                        City = (string)reader["City"],
+                                        SState = (string)reader["SState"],
+                                        Zip = (string)reader["Zip"],
+                                    };
+
+                                    contactslist.Add(contact);
+                                }
+                            }
+                        }
+
+                        foreach (Contact contact in contactslist)
+                        {
+                            Console.WriteLine($"ID: {contact.ID}");
+                            Console.WriteLine($"First Name: {contact.FirstName}");
+                            Console.WriteLine($"Last Name: {contact.LastName}");
+                            Console.WriteLine($"Email: {contact.Email}");
+                            Console.WriteLine($"Phone Number: {contact.PhoneNumber}");
+                            Console.WriteLine($"City: {contact.City}");
+                            Console.WriteLine($"State: {contact.SState}");
+                            Console.WriteLine($"Zip: {contact.Zip}");
+                            Console.WriteLine("----------------------");
+                        }
+
+                        sqlTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Rolling Back the Transaction");
+                        sqlTransaction.Rollback();
+                        Console.WriteLine(ex);
+                    }
+                }
+            }
+
+            return contactslist;
+        }
+
 
 
     }
