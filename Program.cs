@@ -42,6 +42,12 @@
                             BookOperation.AddContact(contact);
                             break;
                         }
+                    case 2:
+                        {
+                            List<Contact> contacts = BookOperation.DisplayContacts();
+                            Console.WriteLine("Contact List:");
+                            break;
+                        }
                     case 5:
                         {
                             Environment.Exit(0);
