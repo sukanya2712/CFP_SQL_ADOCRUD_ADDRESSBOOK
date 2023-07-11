@@ -122,5 +122,27 @@ namespace AddressbookADONET
             }
         }
 
+        public void DeleteContact(int id)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+
+                string query = $"DELETE FROM contacts WHERE ID = {id}";
+                SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                int result = cmd.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    Console.WriteLine("Contact deleted successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to delete contact.");
+                }
+            }
+        }
+
+
     }
 }

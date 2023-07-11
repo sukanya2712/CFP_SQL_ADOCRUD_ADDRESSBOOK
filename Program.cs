@@ -55,6 +55,13 @@
                             BookOperation.EditContact(contactId);
                             break;
                         }
+                    case 4:
+                        {
+                            Console.WriteLine("Enter the id to be deleted :");
+                            int choice = Convert.ToInt32(Console.ReadLine());
+                            BookOperation.DeleteContact(choice);
+                            break;
+                        }
                     case 5:
                         {
                             Environment.Exit(0);
