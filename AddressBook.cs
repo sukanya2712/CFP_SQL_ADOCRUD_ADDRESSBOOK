@@ -77,6 +77,50 @@ namespace AddressbookADONET
             return contactslist;
         }
 
+        public void EditContact(int id)
+        {
+            Console.WriteLine("Enter updated Firstname: ");
+            string firstName = Console.ReadLine();
+            Console.WriteLine("Enter updated LastName: ");
+            string lastName = Console.ReadLine();
+            Console.WriteLine("Enter updated PhoneNumber: ");
+            string phoneNumber = Console.ReadLine();
+            Console.WriteLine("Enter updated Email: ");
+            string email = Console.ReadLine();
+            Console.WriteLine("Enter updated City: ");
+            string city = Console.ReadLine();
+            Console.WriteLine("Enter updated Pincode: ");
+            string zip = Console.ReadLine();
+            Console.WriteLine("Enter updated State: ");
+            string state = Console.ReadLine();
+
+            Contact updatedContact = new Contact(firstName, lastName, phoneNumber, email, city, state, zip);
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+
+                string query = $"UPDATE contacts SET FirstName = '{updatedContact.FirstName}', " +
+                               $"LastName = '{updatedContact.LastName}', " +
+                               $"Email = '{updatedContact.Email}', " +
+                               $"PhoneNumber = '{updatedContact.PhoneNumber}', " +
+                               $"City = '{updatedContact.City}', " +
+                               $"SState = '{updatedContact.SState}', " +
+                               $"Zip = '{updatedContact.Zip}' " +
+                               $"WHERE ID = {id}";
+
+                SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                int result = cmd.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    Console.WriteLine("Contact updated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to update contact.");
+                }
+            }
+        }
 
     }
 }

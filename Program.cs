@@ -48,6 +48,13 @@
                             Console.WriteLine("Contact List:");
                             break;
                         }
+                    case 3:
+                        {
+                            Console.WriteLine("Enter the id to be edited: ");
+                            int contactId = Convert.ToInt32(Console.ReadLine());
+                            BookOperation.EditContact(contactId);
+                            break;
+                        }
                     case 5:
                         {
                             Environment.Exit(0);
