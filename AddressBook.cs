@@ -284,7 +284,7 @@ namespace AddressbookADONET
                 {
                     sqlConnection.Open();
 
-                    using (SqlCommand cmd = new SqlCommand("EditContact", sqlConnection))
+                    using (SqlCommand cmd = new SqlCommand("EditContacts", sqlConnection))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Id", id);
@@ -318,6 +318,47 @@ namespace AddressbookADONET
             }
         }
 
+        public void DeleteContactTransactionalStorePro(int id)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                SqlTransaction transaction = null;
+
+                try
+                {
+                    sqlConnection.Open();
+                    transaction = sqlConnection.BeginTransaction();
+
+                    using (SqlCommand cmd = new SqlCommand("DeleteContact", sqlConnection, transaction))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Id", id);
+
+                        int result = cmd.ExecuteNonQuery();
+
+                        if (result > 0)
+                        {
+                            Console.WriteLine("Contact deleted successfully.");
+                            transaction.Commit();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to delete contact.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred while deleting the contact: " + ex.Message);
+                    transaction?.Rollback();
+                }
+                finally
+                {
+                    transaction?.Dispose();
+                    sqlConnection.Close();
+                }
+            }
+        }
 
 
     }
