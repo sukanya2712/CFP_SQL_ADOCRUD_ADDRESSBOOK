@@ -15,7 +15,8 @@
                     "\n5.Exit the program"+
                     
                     "\n6.Create contact using Transactional store-procedure " +
-                    "\n7.Display contacts using Transactional store-procedure");
+                    "\n7.Display contacts using Transactional store-procedure" +
+                    "\n8.Edit contacts using Transactional Store-Procedure");
 
 
                 Console.Write("\nEnter option: ");
@@ -95,6 +96,13 @@
                         {
                             List<Contact> contacts = BookOperation.DisplayContactsTransactionalStorePro();
                             Console.WriteLine("Contact List:");
+                            break;
+                        }
+                    case 8:
+                        {
+                            Console.WriteLine("Enter the id to be edited: ");
+                            int contactId = Convert.ToInt32(Console.ReadLine());
+                            BookOperation.EditContactTransactionalStorePro(contactId);
                             break;
                         }
                     default:
