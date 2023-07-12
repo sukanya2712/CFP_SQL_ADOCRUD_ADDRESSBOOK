@@ -16,7 +16,8 @@
                     
                     "\n6.Create contact using Transactional store-procedure " +
                     "\n7.Display contacts using Transactional store-procedure" +
-                    "\n8.Edit contacts using Transactional Store-Procedure");
+                    "\n8.Edit contacts using Transactional Store-Procedure" +
+                    "\n9.Delete contacts using Transactional store-Procedure");
 
 
                 Console.Write("\nEnter option: ");
@@ -103,6 +104,13 @@
                             Console.WriteLine("Enter the id to be edited: ");
                             int contactId = Convert.ToInt32(Console.ReadLine());
                             BookOperation.EditContactTransactionalStorePro(contactId);
+                            break;
+                        }
+                    case 9:
+                        {
+                            Console.WriteLine("Enter the id to be deleted :");
+                            int choice = Convert.ToInt32(Console.ReadLine());
+                            BookOperation.DeleteContactTransactionalStorePro(choice);
                             break;
                         }
                     default:
